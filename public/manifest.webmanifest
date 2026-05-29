@@ -1,0 +1,19 @@
+{
+  "name": "Handz or Roundz",
+  "short_name": "Handz",
+  "description": "Handz or Roundz fighting game",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#050507",
+  "theme_color": "#050507",
+  "icons": [
+    {
+      "src": "/portraits/skitz-thumbnail.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

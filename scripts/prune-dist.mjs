@@ -17,7 +17,6 @@ const removeDirs = [
 
 const removeFiles = new Set([
   "models/urban_noir_fighter.glb",
-  "models/idle.glb",
   "models/walking.glb",
   "skitz/.fbx",
   "stages/WAFFLE HOUSE NEW/wafflehouse_stage_optimized.glb",

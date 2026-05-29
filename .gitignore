@@ -16,7 +16,6 @@ asset-backups/
 public/**/*.zip
 src/**/*.zip
 public/models/urban_noir_fighter.glb
-public/models/idle.glb
 public/models/walking.glb
 public/**/*.runtime.webp
 public/**/*.runtime.png

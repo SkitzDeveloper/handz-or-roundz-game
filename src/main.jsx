@@ -7,12 +7,18 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 import "./style.css";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
+
 THREE.Cache.enabled = true;
 
 // IMPORTANT: Combat stays on the old GLB rig because the existing attack FBX files
 // were authored on the old skeleton. Today's textured Fighting Idle.fbx is only
 // used as a menu/preview asset until all attacks are re-exported on the same skeleton.
-const MODEL_URL = "/models/urban_noir_fighter.runtime.glb";
+const MODEL_URL = "/models/idle.glb";
 
 const SKITZ_TEXTURE_URL = "/skitz/Meshy_AI_Urban_Noir_0514212211_texture_fbx/Meshy_AI_Urban_Noir_0514212211_texture.png";
 
@@ -32,6 +38,11 @@ function applySkitzTextureToCombatModel(model, texture) {
       nextMaterial.map = texture;
       nextMaterial.color = new THREE.Color(0xffffff);
       nextMaterial.side = THREE.DoubleSide;
+      nextMaterial.transparent = false;
+      nextMaterial.opacity = 1;
+      nextMaterial.alphaTest = 0;
+      nextMaterial.depthWrite = true;
+      nextMaterial.depthTest = true;
 
       if (typeof nextMaterial.roughness === "number") nextMaterial.roughness = Math.min(nextMaterial.roughness, 0.62);
       if (typeof nextMaterial.metalness === "number") nextMaterial.metalness = Math.min(nextMaterial.metalness, 0.25);
@@ -5632,6 +5643,7 @@ export default function App() {
         setPauseMenuOpen(false);
       }}
       onMenu={backToMenu}
+      mobile={isMobileFightLayout}
     />
   );
 
@@ -8174,7 +8186,7 @@ function RoundResultOverlay({ game, matchSettings, roundStats, onRunBack, onMenu
   );
 }
 
-function PauseMenu({ controls, setControls, musicEnabled, setMusicEnabled, matchSettings, setMatchSettings, onResume, onMenu }) {
+function PauseMenu({ controls, setControls, musicEnabled, setMusicEnabled, matchSettings, setMatchSettings, onResume, onMenu, mobile = false }) {
   const [listeningFor, setListeningFor] = useState(null);
   const difficultyOptions = [
     { id: "easy", label: "BEGINNER" },
@@ -8251,6 +8263,7 @@ function PauseMenu({ controls, setControls, musicEnabled, setMusicEnabled, match
 
   return (
     <div
+      className={mobile ? "bd-pause-overlay bd-pause-overlay-mobile" : "bd-pause-overlay"}
       style={{
         position: "absolute",
         inset: 0,
@@ -8261,20 +8274,32 @@ function PauseMenu({ controls, setControls, musicEnabled, setMusicEnabled, match
         background: "radial-gradient(circle at center, rgba(45,125,255,0.12), rgba(0,0,0,0.72) 54%, rgba(90,0,12,0.48) 100%)",
         color: "#fffaf0",
         fontFamily: MENU_FONT,
-        letterSpacing: "2px",
+        letterSpacing: mobile ? "1px" : "2px",
         textShadow: "3px 3px 0 #000, -2px 0 18px rgba(45,125,255,0.38), 2px 0 18px rgba(255,38,35,0.30)",
       }}
     >
-      <div style={{ width: "min(930px, 92vw)", maxHeight: "88vh", overflow: "auto", padding: "26px", border: "1px solid rgba(192,226,255,0.34)", borderRadius: "8px", background: "linear-gradient(135deg, rgba(0,24,76,0.88), rgba(7,7,8,0.96) 48%, rgba(80,0,10,0.88))", boxShadow: "0 0 44px rgba(45,125,255,0.22), 0 0 44px rgba(255,38,35,0.16), inset 0 0 28px rgba(255,255,255,0.08)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: "18px", alignItems: "center", marginBottom: "20px" }}>
+      <div
+        className="bd-pause-panel"
+        style={{
+          width: mobile ? "min(100%, calc(100vw - 18px))" : "min(930px, 92vw)",
+          maxHeight: mobile ? "calc(100dvh - 18px)" : "88vh",
+          overflow: "auto",
+          padding: mobile ? "12px" : "26px",
+          border: "1px solid rgba(192,226,255,0.34)",
+          borderRadius: "8px",
+          background: "linear-gradient(135deg, rgba(0,24,76,0.88), rgba(7,7,8,0.96) 48%, rgba(80,0,10,0.88))",
+          boxShadow: "0 0 44px rgba(45,125,255,0.22), 0 0 44px rgba(255,38,35,0.16), inset 0 0 28px rgba(255,255,255,0.08)",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", gap: mobile ? "10px" : "18px", alignItems: "center", marginBottom: mobile ? "12px" : "20px", flexWrap: mobile ? "wrap" : "nowrap" }}>
           <div>
-            <div style={{ fontSize: "clamp(46px, 6vw, 76px)", lineHeight: 0.86 }}>PAUSED</div>
-            <div style={{ marginTop: "8px", fontSize: "13px", color: "rgba(232,242,255,0.68)" }}>{matchSettings.stageId?.toUpperCase?.() ?? "STAGE"} / ROUND SETTINGS</div>
+            <div style={{ fontSize: mobile ? "clamp(30px, 9vw, 44px)" : "clamp(46px, 6vw, 76px)", lineHeight: 0.86 }}>PAUSED</div>
+            <div style={{ marginTop: "8px", fontSize: mobile ? "10px" : "13px", color: "rgba(232,242,255,0.68)" }}>{matchSettings.stageId?.toUpperCase?.() ?? "STAGE"} / ROUND SETTINGS</div>
           </div>
-          <button onClick={onResume} className="bd-menu-button" style={{ ...menuButtonStyle, width: "190px", marginBottom: 0 }}>RESUME</button>
+          <button onClick={onResume} className="bd-menu-button" style={{ ...menuButtonStyle, width: mobile ? "140px" : "190px", minHeight: mobile ? "42px" : menuButtonStyle.minHeight, padding: mobile ? "8px 12px" : menuButtonStyle.padding, fontSize: mobile ? "16px" : menuButtonStyle.fontSize, marginBottom: 0 }}>RESUME</button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(220px, 0.75fr) minmax(360px, 1.25fr)", gap: "18px", alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "minmax(220px, 0.75fr) minmax(360px, 1.25fr)", gap: mobile ? "12px" : "18px", alignItems: "start" }}>
           <div style={{ display: "grid", gap: "12px" }}>
             <button onClick={() => setMusicEnabled(v => !v)} className="bd-menu-button" style={{ ...menuButtonStyle, width: "100%", marginBottom: 0 }}>
               MUSIC: {musicEnabled ? "ON" : "OFF"}
@@ -8302,7 +8327,7 @@ function PauseMenu({ controls, setControls, musicEnabled, setMusicEnabled, match
             </button>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? "10px" : "14px" }}>
             <ControlRows playerKey="p1" title="PLAYER 1 CONTROLS" />
             <ControlRows playerKey="p2" title="PLAYER 2 CONTROLS" />
           </div>
