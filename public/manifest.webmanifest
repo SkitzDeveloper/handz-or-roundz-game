@@ -11,8 +11,14 @@
   "theme_color": "#050507",
   "icons": [
     {
-      "src": "/portraits/skitz-thumbnail.png",
-      "sizes": "192x192 512x512",
+      "src": "/menu/home-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/menu/home-icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
