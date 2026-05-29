@@ -3280,6 +3280,9 @@ function MobileFramedScreen({ viewport, children }) {
   const maxMediaHeight = Math.max(140, viewport.height - controllerReserve - outerPadding * 2);
   const mediaHeight = Math.floor(Math.min(availableWidth * 9 / 16, maxMediaHeight));
   const mediaWidth = Math.floor(Math.min(availableWidth, mediaHeight * 16 / 9));
+  const mediaFrameHeight = viewport.isLandscape
+    ? mediaHeight
+    : Math.floor(Math.min(maxMediaHeight, Math.max(mediaHeight, viewport.height * 0.52)));
   const scale = mediaWidth / 1280;
   const handleMenuHold = (control, pressed) => {
     if (!pressed) return;
@@ -3316,7 +3319,7 @@ function MobileFramedScreen({ viewport, children }) {
         className="bd-game-shell"
         style={{
           width: mediaWidth,
-          height: mediaHeight,
+          height: mediaFrameHeight,
           position: "relative",
           overflow: "hidden",
           borderRadius: "8px",
@@ -5592,8 +5595,11 @@ export default function App() {
   const mobileMaxMediaHeight = Math.max(140, viewport.height - mobileControllerReserve - mobileOuterPadding * 2);
   const mobileMediaHeight = Math.floor(Math.min(mobileAvailableWidth * 9 / 16, mobileMaxMediaHeight));
   const mobileMediaWidth = Math.floor(Math.min(mobileAvailableWidth, mobileMediaHeight * 16 / 9));
+  const mobileFrameHeight = viewport.isLandscape
+    ? mobileMediaHeight
+    : Math.floor(Math.min(mobileMaxMediaHeight, Math.max(mobileMediaHeight, viewport.height * 0.52)));
   const fightViewportKey = isMobileFightLayout
-    ? `mobile-${viewport.isLandscape ? "land" : "port"}-${mobileMediaWidth}x${mobileMediaHeight}`
+    ? `mobile-${viewport.isLandscape ? "land" : "port"}-${mobileMediaWidth}x${mobileFrameHeight}`
     : "desktop";
   const hudScale = isMobileFightLayout ? (viewport.isLandscape ? 0.64 : 0.56) : 1;
   const badgeScale = isMobileFightLayout ? (viewport.isLandscape ? 0.62 : 0.56) : 1;
@@ -5621,7 +5627,7 @@ export default function App() {
   const fightViewportStyle = isMobileFightLayout
     ? {
         width: `${mobileMediaWidth}px`,
-        height: `${mobileMediaHeight}px`,
+        height: `${mobileFrameHeight}px`,
         position: "relative",
         overflow: "hidden",
         flex: "0 0 auto",
