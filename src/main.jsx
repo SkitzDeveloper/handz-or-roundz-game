@@ -3286,6 +3286,7 @@ function MobileFramedScreen({ viewport, children }) {
     ? mediaHeight
     : Math.floor(Math.min(maxMediaHeight, Math.max(mediaHeight, viewport.height * 0.52)));
   const scale = mediaWidth / 1280;
+  const contentHeight = Math.ceil(mediaFrameHeight / scale);
   const handleMenuHold = (control, pressed) => {
     if (!pressed) return;
     const input = {
@@ -3332,7 +3333,7 @@ function MobileFramedScreen({ viewport, children }) {
         <div
           style={{
             width: 1280,
-            height: 720,
+            height: contentHeight,
             transform: `scale(${scale})`,
             transformOrigin: "top left",
           }}
