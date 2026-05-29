@@ -1,0 +1,24 @@
+node_modules/
+dist/
+.netlify/
+
+# Local/source files that are not needed by the browser build.
+src/*.zip
+kling_*.mp4
+
+# Vite copies public/ into dist, so keep only runtime assets.
+public/**/*.zip
+public/**/*.fbm/
+public/models/idle.glb
+public/models/walking.glb
+public/skitz/.fbx
+public/skitz/Meshy_AI_Urban_Noir_0514212211_texture_fbx/*.fbx
+public/mockv/Meshy_AI_Urban_Swagger_0515190027_texture_fbx/
+public/Xtra/Meshy_AI_Leather_Rebel_Portrai_biped/
+public/stages/da Bull/Meshy_AI_3d_render_of_downtown_0523195119_texture_fbx/
+public/stages/WAFFLE HOUSE NEW/Meshy_AI_Waffle_House_Aftermat_0520231457_texture_fbx/
+public/stages/WAFFLE HOUSE NEW/Meshy_AI_Waffle_House_Aftermat_0521004624_texture_fbx/
+public/stages/da Bull/Meshy_AI_Skybound_Bull_Plaza_0525000655_texture_fbx/Meshy_AI_Skybound_Bull_Plaza_0525000655_texture.fbx
+public/stages/durhamskatebowl/Meshy_AI_Urban_Graffiti_Skate__0523184622_texture_fbx/Meshy_AI_Urban_Graffiti_Skate__0523184622_texture.fbx
+public/stages/nc state graffiti/Meshy_AI_Night_at_the_Vintage__0523143540_texture_fbx/Meshy_AI_Night_at_the_Vintage__0523143540_texture.fbx
+public/stages/redbulldys/Meshy_AI_Red_Bull_Dance_Your_S_0523060528_texture_fbx/Meshy_AI_Red_Bull_Dance_Your_S_0523060528_texture.fbx

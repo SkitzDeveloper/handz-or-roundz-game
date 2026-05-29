@@ -1,0 +1,124 @@
+{
+  "character": {
+    "id": "terrorEast",
+    "displayName": "Terror East",
+    "folder": "/terror east",
+    "sourceFps": 30,
+    "status": "ready for combat wiring",
+    "specialAbility": "Heavy Attack 2 uses heavykick2.fbx, costs 95% stamina, and deals a true 65 HP damage on clean hit."
+  },
+  "model": {
+    "skinSource": "Idle.fbx",
+    "note": "Idle.fbx has the skin/model. The current file on disk is capitalized as Idle.fbx."
+  },
+  "filesObservedOn2026-05-22": [
+    "Idle.fbx",
+    "Stunned.fbx",
+    "die.fbx",
+    "heavykick.fbx",
+    "heavykick2.fbx",
+    "hitreact1.fbx",
+    "hitreact2.fbx",
+    "hitreact3.fbx",
+    "kick1.fbx",
+    "kick2.fbx",
+    "kick3.fbx",
+    "punch1.fbx",
+    "punch2.fbx",
+    "punch3.fbx",
+    "walking.fbx",
+    "block.fbx"
+  ],
+  "animations": {
+    "idle": {
+      "file": "Idle.fbx",
+      "hasSkin": true,
+      "frames": 89,
+      "alias": "idle3"
+    },
+    "walk": {
+      "file": "walking.fbx",
+      "frames": null,
+      "note": "Implemented for both forward and backward movement. Frame count not provided yet."
+    },
+    "block": {
+      "file": "block.fbx",
+      "frames": null,
+      "note": "Implemented as Terror East's dedicated guard animation."
+    },
+    "hitReaction1": {
+      "file": "hitreact1.fbx",
+      "frames": 38
+    },
+    "hitReaction2": {
+      "file": "hitreact2.fbx",
+      "frames": 43
+    },
+    "hitReaction3": {
+      "file": "hitreact3.fbx",
+      "frames": 56
+    },
+    "stunned": {
+      "file": "Stunned.fbx",
+      "frames": 75
+    },
+    "die": {
+      "file": "die.fbx",
+      "frames": null
+    },
+    "punch1": {
+      "file": "punch1.fbx",
+      "frames": 21,
+      "hitFrames": [6]
+    },
+    "punch2": {
+      "file": "punch2.fbx",
+      "frames": 18,
+      "hitFrames": [18]
+    },
+    "punch3": {
+      "file": "punch3.fbx",
+      "frames": 76,
+      "hitFrames": [15, 29, 37, 44, 48, 56],
+      "note": "Third light-punch chain step after punch2. Each hit gets stronger screen impact."
+    },
+    "kick1": {
+      "file": "kick1.fbx",
+      "frames": 27,
+      "hitFrames": [11]
+    },
+    "kick2": {
+      "file": "kick2.fbx",
+      "frames": 27,
+      "hitFrames": [11]
+    },
+    "kick3": {
+      "file": "kick3.fbx",
+      "frames": 32,
+      "hitFrames": [16]
+    },
+    "heavyKick": {
+      "file": "heavykick.fbx",
+      "frames": 51,
+      "hitFrames": [25]
+    },
+    "heavyAttack2": {
+      "file": "heavykick2.fbx",
+      "frames": 83,
+      "hitFrames": [21],
+      "damagePercent": 65,
+      "staminaCostPercent": 95
+    }
+  },
+  "missingOrUnconfirmed": [
+    {
+      "animation": "getUp",
+      "note": "No dedicated getup file observed yet; combat wiring can use stunned/idle fallback."
+    },
+    {
+      "animation": "die",
+      "file": "die.fbx",
+      "note": "File exists, but frame count was not provided."
+    }
+  ]
+}

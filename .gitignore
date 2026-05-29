@@ -1,0 +1,38 @@
+node_modules/
+dist/
+.netlify/
+.wrangler/
+.cloudflare/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+asset-backups/
+
+# Source/archive assets kept locally but not shipped from GitHub/Cloudflare Pages.
+public/**/*.zip
+src/**/*.zip
+public/models/urban_noir_fighter.glb
+public/models/idle.glb
+public/models/walking.glb
+public/**/*.runtime.webp
+public/**/*.runtime.png
+public/skitz/.fbx
+public/skitz/Meshy_AI_Urban_Noir_0514212211_texture_fbx/*.fbx
+public/skitz/Meshy_AI_Urban_Noir_0514212211_texture_fbx/*.mtl
+public/skitz/Meshy_AI_Urban_Noir_0514212211_texture_fbx/*.obj
+public/stages/WAFFLE HOUSE NEW/Meshy_AI_*/
+public/stages/WAFFLE HOUSE NEW/wafflehouse_stage_optimized.glb
+public/stages/da Bull/Meshy_AI_3d_render_of_downtown_*/
+public/stages/da Bull/Meshy_AI_Skybound_Bull_Plaza_0525000655_texture_fbx/Meshy_AI_Skybound_Bull_Plaza_0525000655_texture.fbx
+public/stages/da Bull/Meshy_AI_Skybound_Bull_Plaza_0525000655_texture_fbx/da_bull_runtime.glb
+public/stages/durhamskatebowl/Meshy_AI_Urban_Graffiti_Skate__0523184622_texture_fbx/Meshy_AI_Urban_Graffiti_Skate__0523184622_texture.fbx
+public/stages/durhamskatebowl/Meshy_AI_Urban_Graffiti_Skate__0523184622_texture_fbx/skate_bowl_runtime.glb
+public/stages/nc state graffiti/Meshy_AI_Night_at_the_Vintage__0523143540_texture_fbx/Meshy_AI_Night_at_the_Vintage__0523143540_texture.fbx
+public/stages/nc state graffiti/Meshy_AI_Night_at_the_Vintage__0523143540_texture_fbx/nc_graffiti_runtime.glb
+public/stages/redbulldys/Meshy_AI_Red_Bull_Dance_Your_S_0523060528_texture_fbx/Meshy_AI_Red_Bull_Dance_Your_S_0523060528_texture.fbx
+public/stages/redbulldys/Meshy_AI_Red_Bull_Dance_Your_S_0523060528_texture_fbx/redbull_dys_runtime.glb
+public/**/.fbm/

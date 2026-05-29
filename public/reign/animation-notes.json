@@ -1,0 +1,139 @@
+{
+  "character": {
+    "id": "reign",
+    "displayName": "Reign",
+    "workingNames": ["Comvante", "Reign"],
+    "folder": "/reign",
+    "sourceFps": 30,
+    "status": "animation intake",
+    "specialAbility": "Deals the most damage in the game."
+  },
+  "model": {
+    "skinSource": "Idle.fbx",
+    "note": "Idle.fbx has the skin. The current file on disk is capitalized as Idle.fbx."
+  },
+  "filesObservedOn2026-05-22": [
+    "Idle.fbx",
+    "block.fbx",
+    "die.fbx",
+    "getup.fbx",
+    "heavykick.fbx",
+    "heavypunch.fbx",
+    "hitreaction.fbx",
+    "hitreaction2.fbx",
+    "hutreaction3.fbx",
+    "kick1.fbx",
+    "kick2.fbx",
+    "kick3.fbx",
+    "punch1.fbx",
+    "punch2.fbx",
+    "punchreaction1.fbx",
+    "randomhitreacthitreaction1.fbx",
+    "stunned.fbx"
+  ],
+  "missingOrUnconfirmed": [
+    {
+      "animation": "punch3",
+      "expectedFile": "punch3.fbx",
+      "note": "Dropped by design. Do not wait on or wire a Reign punch3 unless the plan changes."
+    },
+    {
+      "animation": "hitReaction1",
+      "observedFile": "hitreaction.fbx",
+      "note": "Frame count not provided yet."
+    },
+    {
+      "animation": "hitReaction2",
+      "observedFile": "hitreaction2.fbx",
+      "note": "Frame count not provided yet."
+    },
+    {
+      "animation": "hitReaction3",
+      "observedFile": "hutreaction3.fbx",
+      "note": "Frame count provided as 98. Filename currently reads hutreaction3.fbx."
+    }
+  ],
+  "animations": {
+    "idle": {
+      "file": "Idle.fbx",
+      "hasSkin": true,
+      "frames": null,
+      "notes": "Idle/model source."
+    },
+    "punchReaction1": {
+      "file": "punchreaction1.fbx",
+      "frames": 42
+    },
+    "block": {
+      "file": "block.fbx",
+      "frames": 38
+    },
+    "punch1": {
+      "file": "punch1.fbx",
+      "frames": 34,
+      "hitFrames": [18],
+      "damagePercent": 10
+    },
+    "punch2": {
+      "file": "punch2.fbx",
+      "frames": 31,
+      "hitFrames": [6],
+      "damagePercent": 20
+    },
+    "kick1": {
+      "file": "kick1.fbx",
+      "frames": 39,
+      "hitFrames": [15],
+      "damagePercent": null
+    },
+    "kick2": {
+      "file": "kick2.fbx",
+      "frames": 32,
+      "hitFrames": [8],
+      "damagePercent": null
+    },
+    "kick3": {
+      "file": "kick3.fbx",
+      "frames": 73,
+      "hitFrames": [32],
+      "damagePercent": 35,
+      "notes": "Drop kick."
+    },
+    "heavyKick": {
+      "file": "heavykick.fbx",
+      "frames": 29,
+      "hitFrames": [15],
+      "damagePercent": 25
+    },
+    "heavyPunch": {
+      "file": "heavypunch.fbx",
+      "frames": 28,
+      "hitFrames": [7],
+      "damagePercent": null
+    },
+    "hitReaction1": {
+      "file": "hitreaction.fbx",
+      "frames": null
+    },
+    "hitReaction2": {
+      "file": "hitreaction2.fbx",
+      "frames": null
+    },
+    "hitReaction3": {
+      "file": "hutreaction3.fbx",
+      "frames": 98
+    },
+    "getUp": {
+      "file": "getup.fbx",
+      "frames": 126
+    },
+    "die": {
+      "file": "die.fbx",
+      "frames": 50
+    },
+    "stunned": {
+      "file": "stunned.fbx",
+      "frames": 72
+    }
+  }
+}

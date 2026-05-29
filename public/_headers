@@ -1,0 +1,29 @@
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/models/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/skitz/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Jose/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/mockv/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Xtra/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/terror east/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/reign/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/stages/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
