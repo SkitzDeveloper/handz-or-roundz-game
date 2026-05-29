@@ -4,7 +4,7 @@
   "description": "Handz or Roundz fighting game",
   "start_url": "/",
   "scope": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "any",
   "background_color": "#050507",
   "theme_color": "#050507",

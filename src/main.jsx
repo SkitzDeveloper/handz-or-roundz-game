@@ -5748,9 +5748,9 @@ export default function App() {
           <StaminaGauge stamina={game.p2.stamina} maxStamina={game.p2.maxStamina} reverse />
         </div>
 
-        <ComboReadout comboHud={comboHud} />
-        <DamagePopups popups={combatPopups} />
-        <SystemAlerts alerts={systemAlerts} />
+        <ComboReadout comboHud={comboHud} mobile={isMobileFightLayout} />
+        <DamagePopups popups={combatPopups} mobile={isMobileFightLayout} />
+        <SystemAlerts alerts={systemAlerts} mobile={isMobileFightLayout} />
         <CriticalFlash nonce={redFlashNonce} />
         <RoundFlowOverlay flow={roundFlow} game={game} matchSettings={matchSettings} />
 
@@ -7814,43 +7814,59 @@ function DefaultStage() {
 // ─────────────────────────────────────────────
 //  HUD
 // ─────────────────────────────────────────────
-function ComboReadout({ comboHud }) {
+function ComboReadout({ comboHud, mobile = false }) {
   const showP1 = comboHud.p1.hits > 1;
   const showP2 = comboHud.p2.hits > 1;
 
   return (
     <>
       {showP1 && (
-        <div style={comboBoxStyle("left")}>
-          <div style={{ fontSize: "42px" }}>{comboHud.p1.hits} HIT COMBO</div>
-          <div style={{ fontSize: "18px" }}>{pct(comboHud.p1.damage)} DAMAGE</div>
+        <div style={comboBoxStyle("left", mobile)}>
+          <div style={{ fontSize: mobile ? "21px" : "42px" }}>{comboHud.p1.hits} HIT COMBO</div>
+          <div style={{ fontSize: mobile ? "10px" : "18px" }}>{pct(comboHud.p1.damage)} DAMAGE</div>
         </div>
       )}
       {showP2 && (
-        <div style={comboBoxStyle("right")}>
-          <div style={{ fontSize: "42px" }}>{comboHud.p2.hits} HIT COMBO</div>
-          <div style={{ fontSize: "18px" }}>{pct(comboHud.p2.damage)} DAMAGE</div>
+        <div style={comboBoxStyle("right", mobile)}>
+          <div style={{ fontSize: mobile ? "21px" : "42px" }}>{comboHud.p2.hits} HIT COMBO</div>
+          <div style={{ fontSize: mobile ? "10px" : "18px" }}>{pct(comboHud.p2.damage)} DAMAGE</div>
         </div>
       )}
     </>
   );
 }
 
-function comboBoxStyle(side) {
+function comboBoxStyle(side, mobile = false) {
   return {
     position: "absolute",
-    top: "126px",
-    [side]: "54px",
+    top: mobile ? "60px" : "126px",
+    [side]: mobile ? "16px" : "54px",
     color: "#ffe16a",
     fontFamily: "Impact, fantasy",
-    letterSpacing: "2px",
+    letterSpacing: mobile ? "1px" : "2px",
     textShadow: "0 0 12px #ff4b00, 0 0 22px rgba(255,0,0,0.65)",
     pointerEvents: "none",
     textAlign: side === "right" ? "right" : "left",
+    transform: mobile ? "scale(0.86)" : undefined,
+    transformOrigin: side === "right" ? "top right" : "top left",
   };
 }
 
-function DamagePopups({ popups }) {
+function DamagePopups({ popups, mobile = false }) {
+  const popupFontSize = ({ isKo, isClash, isWall, isPerfectGuard, isCounter, isPower, isPunish, isComboGrade, popup }) => {
+    if (mobile) {
+      if (isKo) return "clamp(42px, 10vw, 68px)";
+      if (isClash) return "24px";
+      if (isWall) return "21px";
+      if (isPerfectGuard) return "17px";
+      if (isCounter || isPower || isPunish || isComboGrade) return "18px";
+      if (popup.talk) return "16px";
+      if (popup.blocked) return "14px";
+      return "18px";
+    }
+    return isKo ? "clamp(78px, 13vw, 156px)" : isClash ? "46px" : isWall ? "38px" : isPerfectGuard ? "30px" : isCounter || isPower || isPunish || isComboGrade ? "32px" : popup.talk ? "28px" : popup.blocked ? "24px" : "34px";
+  };
+
   return (
     <>
       <style>{`
@@ -7878,8 +7894,8 @@ function DamagePopups({ popups }) {
               top: popup.top,
               color: isKo ? "#fffaf0" : isPerfectGuard ? "#dba6ff" : isClash || isWall || isComboGrade ? "#fff4b8" : isCounter || isPower || isPunish ? "#ffe16a" : popup.talk ? "#fff0b8" : popup.heal ? "#7CFF8D" : popup.blocked ? "#7fe7ff" : "#ff4055",
               fontFamily: "Impact, fantasy",
-              fontSize: isKo ? "clamp(78px, 13vw, 156px)" : isClash ? "46px" : isWall ? "38px" : isPerfectGuard ? "30px" : isCounter || isPower || isPunish || isComboGrade ? "32px" : popup.talk ? "28px" : popup.blocked ? "24px" : "34px",
-              letterSpacing: isKo ? "8px" : isClash ? "5px" : isPerfectGuard ? "3px" : popup.talk || isCounter || isPower || isPunish || isComboGrade || isWall ? "3px" : "2px",
+              fontSize: popupFontSize({ isKo, isClash, isWall, isPerfectGuard, isCounter, isPower, isPunish, isComboGrade, popup }),
+              letterSpacing: mobile ? (isKo ? "3px" : "1px") : isKo ? "8px" : isClash ? "5px" : isPerfectGuard ? "3px" : popup.talk || isCounter || isPower || isPunish || isComboGrade || isWall ? "3px" : "2px",
               textTransform: (popup.talk || isPerfectGuard || isClash || isCounter || isPower || isPunish || isComboGrade || isWall || isKo) ? "uppercase" : "none",
               textShadow: isKo
                 ? "5px 5px 0 #000, 0 0 18px #ffffff, 0 0 42px #ff2623, 0 0 58px #2d7dff"
@@ -7892,6 +7908,9 @@ function DamagePopups({ popups }) {
                 : popup.talk ? "2px 2px 0 #000, 0 0 12px #ffcf6b, 0 0 22px #ff2d75" : popup.heal ? "0 0 10px #00ff66, 0 0 18px #003b18" : popup.blocked ? "0 0 10px #00d5ff" : "0 0 10px #6b0000, 0 0 18px #ff0000",
               pointerEvents: "none",
               animation: "bdDamageFloat 900ms ease-out forwards",
+              maxWidth: mobile ? "42vw" : undefined,
+              whiteSpace: "normal",
+              lineHeight: mobile ? 0.92 : 1,
             }}
           >
             {popup.text}
@@ -7903,7 +7922,7 @@ function DamagePopups({ popups }) {
 }
 
 
-function SystemAlerts({ alerts }) {
+function SystemAlerts({ alerts, mobile = false }) {
   return (
     <>
       <style>{`
@@ -7942,21 +7961,21 @@ function SystemAlerts({ alerts }) {
             key={alert.id}
             style={{
               position: "absolute",
-              top: `${40 + index * 30}%`,
-              left: isP1 ? "38%" : "62%",
+              top: mobile ? `${34 + index * 18}%` : `${40 + index * 30}%`,
+              left: mobile ? (isP1 ? "34%" : "66%") : isP1 ? "38%" : "62%",
               zIndex: 15,
-              minWidth: "118px",
-              maxWidth: "230px",
-              padding: "6px 10px",
+              minWidth: mobile ? "82px" : "118px",
+              maxWidth: mobile ? "148px" : "230px",
+              padding: mobile ? "4px 7px" : "6px 10px",
               color: palette.text,
               background: `linear-gradient(90deg, ${palette.bg}, rgba(0,0,0,0.34))`,
               border: `1px solid ${palette.border}`,
-              borderLeft: `4px solid ${palette.accent}`,
+              borderLeft: `${mobile ? 3 : 4}px solid ${palette.accent}`,
               borderRadius: "999px",
               boxShadow: `0 0 14px ${palette.border}44`,
               fontFamily: "Trebuchet MS, Arial Black, sans-serif",
               fontWeight: 900,
-              letterSpacing: "1px",
+              letterSpacing: mobile ? ".4px" : "1px",
               textAlign: "center",
               pointerEvents: "none",
               animation: `bdSystemAlertIn ${SYSTEM_ALERT_LIFETIME_MS}ms ease-out forwards`,
@@ -7964,7 +7983,7 @@ function SystemAlerts({ alerts }) {
               backdropFilter: "blur(5px)",
             }}
           >
-            <div style={{ fontSize: "11px", lineHeight: 1.1, textShadow: "0 1px 0 #000" }}>{alert.text}</div>
+            <div style={{ fontSize: mobile ? "8px" : "11px", lineHeight: mobile ? 1 : 1.1, textShadow: "0 1px 0 #000" }}>{alert.text}</div>
           </div>
         );
       })}
