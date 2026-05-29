@@ -79,7 +79,8 @@ main { width: 100vw; height: 100vh; display: grid; place-items: center; color: w
 
 .bd-mobile-controller {
   width: min(100%, 820px);
-  flex: 1 1 auto;
+  flex: 0 1 auto;
+  margin-top: auto;
   min-height: 112px;
   max-height: 142px;
   display: grid;
@@ -175,8 +176,8 @@ main { width: 100vw; height: 100vh; display: grid; place-items: center; color: w
     grid-template-areas:
       "pad actions"
       "system actions";
-    min-height: 262px;
-    max-height: 328px;
+    min-height: min(252px, 37dvh);
+    max-height: min(300px, 42dvh);
     gap: 9px;
     padding: 10px;
   }
@@ -201,7 +202,7 @@ main { width: 100vw; height: 100vh; display: grid; place-items: center; color: w
   }
 
   .bd-mobile-btn {
-    min-height: 43px;
+    min-height: 40px;
     font-size: 12px;
   }
 }

@@ -3274,8 +3274,8 @@ function MobileFightControls({ onHold, onAttack, onTaunt, onPause, disabled = fa
 }
 
 function MobileFramedScreen({ viewport, children }) {
-  const outerPadding = viewport.isLandscape ? 8 : 10;
-  const controllerReserve = viewport.isLandscape ? 132 : 304;
+  const outerPadding = viewport.isLandscape ? 8 : 8;
+  const controllerReserve = viewport.isLandscape ? 122 : 262;
   const availableWidth = Math.max(280, viewport.width - outerPadding * 2);
   const maxMediaHeight = Math.max(140, viewport.height - controllerReserve - outerPadding * 2);
   const mediaHeight = Math.floor(Math.min(availableWidth * 9 / 16, maxMediaHeight));
@@ -3305,8 +3305,9 @@ function MobileFramedScreen({ viewport, children }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: viewport.isLandscape ? 6 : 12,
-        padding: outerPadding,
+        justifyContent: "space-between",
+        gap: viewport.isLandscape ? 6 : 8,
+        padding: `${outerPadding}px ${outerPadding}px max(${outerPadding}px, env(safe-area-inset-bottom))`,
         background: "linear-gradient(135deg, #050814 0%, #08040a 52%, #130005 100%)",
         overflow: "hidden",
       }}
@@ -5585,8 +5586,8 @@ export default function App() {
     );
   }
 
-  const mobileOuterPadding = viewport.isLandscape ? 8 : 10;
-  const mobileControllerReserve = viewport.isLandscape ? 132 : 304;
+  const mobileOuterPadding = viewport.isLandscape ? 8 : 8;
+  const mobileControllerReserve = viewport.isLandscape ? 122 : 262;
   const mobileAvailableWidth = Math.max(280, viewport.width - mobileOuterPadding * 2);
   const mobileMaxMediaHeight = Math.max(140, viewport.height - mobileControllerReserve - mobileOuterPadding * 2);
   const mobileMediaHeight = Math.floor(Math.min(mobileAvailableWidth * 9 / 16, mobileMaxMediaHeight));
@@ -5610,9 +5611,9 @@ export default function App() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
-        gap: viewport.isLandscape ? "6px" : "10px",
-        padding: `${mobileOuterPadding}px ${mobileOuterPadding}px 0`,
+        justifyContent: "space-between",
+        gap: viewport.isLandscape ? "6px" : "8px",
+        padding: `${mobileOuterPadding}px ${mobileOuterPadding}px max(${mobileOuterPadding}px, env(safe-area-inset-bottom))`,
         touchAction: "none",
       }
     : { width: "100vw", height: "100vh", background: "#000", position: "relative", overflow: "hidden" };
