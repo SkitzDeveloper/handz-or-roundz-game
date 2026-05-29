@@ -1752,47 +1752,49 @@ function selectedMenuStyle(selected, extra = {}) {
 
 function MenuVideoBackdrop({ dim = 0.34, blur = 0, children }) {
   const viewport = useViewportInfo();
-  const mobilePoster = viewport.isPhoneLike;
+  const [videoReady, setVideoReady] = useState(false);
+  const videoPreload = viewport.isPhoneLike ? "metadata" : "auto";
 
   return (
     <>
-      {mobilePoster ? (
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "url('/menu/0527-poster.jpg'), url('/portraits/skitz-thumbnail.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: `saturate(1.22) contrast(1.06) brightness(.82) blur(${blur}px)`,
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-      ) : (
-        <video
-          src={MENU_VIDEO_URL}
-          autoPlay
-          loop
-          muted
-          defaultMuted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            filter: `saturate(1.28) contrast(1.08) brightness(.82) blur(${blur}px)`,
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-      )}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/menu/0527-poster.jpg'), url('/portraits/skitz-thumbnail.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: `saturate(1.22) contrast(1.06) brightness(.82) blur(${blur}px)`,
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+      <video
+        src={MENU_VIDEO_URL}
+        poster="/menu/0527-poster.jpg"
+        autoPlay
+        loop
+        muted
+        defaultMuted
+        playsInline
+        preload={videoPreload}
+        onCanPlay={() => setVideoReady(true)}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          opacity: videoReady ? 1 : 0,
+          transition: "opacity 220ms ease",
+          filter: `saturate(1.28) contrast(1.08) brightness(.82) blur(${blur}px)`,
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
       <div style={{ position: "absolute", inset: 0, background: `rgba(0,0,0,${dim})`, pointerEvents: "none", zIndex: 1 }} />
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,39,130,0.48), rgba(0,0,0,0.10) 45%, rgba(163,0,18,0.48))", mixBlendMode: "screen", pointerEvents: "none", zIndex: 1 }} />
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 23% 46%, rgba(48,116,255,0.30), transparent 35%), radial-gradient(circle at 76% 44%, rgba(255,28,34,0.28), transparent 34%), linear-gradient(180deg, rgba(0,0,0,0.36), transparent 42%, rgba(0,0,0,0.50))", pointerEvents: "none", zIndex: 1 }} />
