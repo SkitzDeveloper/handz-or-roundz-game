@@ -3136,23 +3136,33 @@ function StagePreview({ stage }) {
 
 function getViewportInfo() {
   if (typeof window === "undefined") {
-    return { width: 1280, height: 720, isTouch: false, isLandscape: true, isPhoneLike: false };
+    return { width: 1280, height: 720, isTouch: false, isLandscape: true, isPhoneLike: false, isMobileDevice: false, isDesktopBrowser: true };
   }
 
   const width = Math.round(window.visualViewport?.width ?? window.innerWidth ?? 1280);
   const height = Math.round(window.visualViewport?.height ?? window.innerHeight ?? 720);
   const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches ?? false;
+  const finePointer = window.matchMedia?.("(pointer: fine)")?.matches ?? false;
+  const hoverCapable = window.matchMedia?.("(hover: hover)")?.matches ?? false;
+  const standaloneDisplay = window.matchMedia?.("(display-mode: fullscreen), (display-mode: standalone), (display-mode: minimal-ui)")?.matches ?? false;
   const maxTouchPoints = typeof navigator === "undefined" ? 0 : navigator.maxTouchPoints ?? 0;
   const userAgent = typeof navigator === "undefined" ? "" : navigator.userAgent ?? "";
+  const platform = typeof navigator === "undefined" ? "" : navigator.platform ?? "";
   const mobileUserAgent = /android|iphone|ipad|ipod|mobile|windows phone/i.test(userAgent);
-  const cssMobileWidth = window.matchMedia?.("(max-width: 900px)")?.matches ?? false;
+  const ipadOSDesktopUa = /mac/i.test(platform) && maxTouchPoints > 1 && /safari/i.test(userAgent) && !/chrome|chromium|edg/i.test(userAgent);
+  const isLikelyDesktopBrowser = (hoverCapable || finePointer) && !mobileUserAgent && !ipadOSDesktopUa;
+  const isMobileDevice = mobileUserAgent || ipadOSDesktopUa || (coarsePointer && maxTouchPoints > 0 && !isLikelyDesktopBrowser && Math.min(width, height) <= 900);
+  const phoneSizedViewport = Math.min(width, height) <= 760 || Math.max(width, height) <= 980;
   const isTouch = coarsePointer || maxTouchPoints > 0 || mobileUserAgent;
   return {
     width,
     height,
     isTouch,
     isLandscape: width > height,
-    isPhoneLike: (isTouch || mobileUserAgent) && (Math.min(width, height) <= 760 || cssMobileWidth),
+    isMobileDevice,
+    isDesktopBrowser: !isMobileDevice,
+    isStandalone: standaloneDisplay,
+    isPhoneLike: isMobileDevice && (phoneSizedViewport || standaloneDisplay),
   };
 }
 
