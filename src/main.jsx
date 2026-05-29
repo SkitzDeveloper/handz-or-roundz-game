@@ -3350,6 +3350,62 @@ function MobileFramedScreen({ viewport, children }) {
   );
 }
 
+function MobileInstallPrompt({ viewport, screen }) {
+  const [dismissed, setDismissed] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.localStorage?.getItem("bd-install-prompt-dismissed") === "1";
+  });
+  const [installEvent, setInstallEvent] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const onBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallEvent(event);
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+  }, []);
+
+  if (!viewport.isPhoneLike || viewport.isStandalone || screen === "fight" || dismissed) return null;
+
+  const isiOS = typeof navigator !== "undefined" && /iphone|ipad|ipod/i.test(navigator.userAgent ?? "");
+  const instruction = installEvent
+    ? "Get the full-screen version."
+    : isiOS
+      ? "Tap Share, then Add to Home Screen."
+      : "Save it to your home screen for the best full-screen experience.";
+
+  const dismiss = () => {
+    window.localStorage?.setItem("bd-install-prompt-dismissed", "1");
+    setDismissed(true);
+  };
+
+  const install = async () => {
+    if (!installEvent) return;
+    await installEvent.prompt();
+    setInstallEvent(null);
+    dismiss();
+  };
+
+  return (
+    <div className="bd-install-prompt" role="status" aria-live="polite">
+      <div className="bd-install-prompt-copy">
+        <b>Play it like an app</b>
+        <span>{instruction}</span>
+      </div>
+      {installEvent && (
+        <button type="button" className="bd-install-prompt-action" onClick={install}>
+          ADD
+        </button>
+      )}
+      <button type="button" className="bd-install-prompt-close" aria-label="Dismiss home screen reminder" onClick={dismiss}>
+        X
+      </button>
+    </div>
+  );
+}
+
 class CanvasSceneErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -3397,6 +3453,12 @@ export default function App() {
   const frameMobileMenu = (content) => isMobileMenuLayout
     ? <MobileFramedScreen viewport={viewport}>{content}</MobileFramedScreen>
     : content;
+  const withInstallPrompt = (content) => (
+    <>
+      {content}
+      <MobileInstallPrompt viewport={viewport} screen={screen} />
+    </>
+  );
 
   const [game, setGame] = useState({
     p1: makeFighter(-2.8, "Skitz", "skitz"),
@@ -5497,48 +5559,48 @@ export default function App() {
   }
 
   if (screen === "aiModeSelect") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <AiModeSelect
         settings={pendingSettings}
         onBack={() => setScreen("characterSelect")}
         onPick={pickAiMode}
       />
-    );
+    ));
   }
 
   if (screen === "difficultySelect") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <DifficultySelect
         settings={pendingSettings}
         onBack={() => setScreen("aiModeSelect")}
         onPick={pickDifficulty}
       />
-    );
+    ));
   }
 
   if (screen === "characterSelect") {
     if (pendingSettings?.mode === "lan") {
-      return frameMobileMenu(
+      return withInstallPrompt(frameMobileMenu(
         <LanCharacterSelect
           settings={pendingSettings}
           onBack={() => setScreen("menu")}
           onConfirm={confirmLanCharacters}
         />
-      );
+      ));
     }
 
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <CharacterSelect
         settings={pendingSettings}
         onBack={() => setScreen("menu")}
         onSelect={confirmCharacter}
         title="CHOOSE YOUR DANCER"
       />
-    );
+    ));
   }
 
   if (screen === "p2CharacterSelect") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <CharacterSelect
         settings={pendingSettings}
         onBack={() => {
@@ -5549,11 +5611,11 @@ export default function App() {
         title="PLAYER 2 SELECT"
         subtitle={`PLAYER 1: ${getCharacterStats(pendingSettings?.p1Character ?? "skitz").name?.toUpperCase?.() ?? "SKITZ"} / PICK PLAYER 2`}
       />
-    );
+    ));
   }
 
   if (screen === "opponentSelect") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <CharacterSelect
         settings={pendingSettings}
         onBack={() => setScreen("difficultySelect")}
@@ -5561,11 +5623,11 @@ export default function App() {
         title="CHOOSE OPPONENT"
         subtitle={`PLAYER: ${getCharacterStats(pendingSettings?.p1Character ?? "skitz").name?.toUpperCase?.() ?? "SKITZ"} / PICK WHO TO FIGHT`}
       />
-    );
+    ));
   }
 
   if (screen === "stageSelect") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <StageSelect
         settings={pendingSettings}
         onBack={() => {
@@ -5575,11 +5637,11 @@ export default function App() {
         }}
         onPick={pickStage}
       />
-    );
+    ));
   }
 
   if (screen === "menu") {
-    return frameMobileMenu(
+    return withInstallPrompt(frameMobileMenu(
       <MainMenu
         onStartAI={startAIMatch}
         onStartLAN={startLANMatch}
@@ -5588,7 +5650,7 @@ export default function App() {
         musicEnabled={musicEnabled}
         setMusicEnabled={setMusicEnabled}
       />
-    );
+    ));
   }
 
   const mobileOuterPadding = viewport.isLandscape ? 8 : 8;
@@ -5666,7 +5728,7 @@ export default function App() {
     />
   );
 
-  return (
+  return withInstallPrompt(
     <div className={`bd-fight-root ${isMobileFightLayout ? "bd-game-shell-mobile" : ""}`} style={fightRootStyle}>
       <div className="bd-game-shell bd-fight-viewport" style={fightViewportStyle}>
         <ScreenImpact shakeEvent={shakeEvent} />
